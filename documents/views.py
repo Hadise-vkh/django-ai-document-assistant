@@ -1,12 +1,13 @@
 from openai import OpenAI
 from dotenv import load_dotenv
 import os
-from django.shortcuts import render
+
 from rest_framework import generics
-from .models import Document
-from .serializers import DocumentSerializer
 from rest_framework.views import APIView
 from rest_framework.response import Response
+
+from .models import Document, QuestionHistory
+from .serializers import DocumentSerializer
 
 load_dotenv()
 
@@ -14,9 +15,12 @@ client = OpenAI(
     api_key=os.getenv("OPENROUTER_API_KEY"),
     base_url="https://openrouter.ai/api/v1",
 )
+
+
 class DocumentListAPIView(generics.ListAPIView):
     queryset = Document.objects.all()
     serializer_class = DocumentSerializer
+
 
 class AskQuestionAPIView(APIView):
     def post(self, request):
@@ -50,6 +54,11 @@ Question:
         )
 
         answer = response.choices[0].message.content
+
+        QuestionHistory.objects.create(
+            question=question,
+            answer=answer
+        )
 
         return Response({
             "answer": answer
