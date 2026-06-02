@@ -1,5 +1,6 @@
 from django.db import models
 from docx import Document as DocxDocument
+from .vector_store import add_document_to_vector_store
 
 
 class Document(models.Model):
@@ -22,7 +23,6 @@ class Document(models.Model):
             self.content = text
 
             super().save(update_fields=["content"])
-            from .vector_store import add_document_to_vector_store
             add_document_to_vector_store(
                 self.id,
                 self.content

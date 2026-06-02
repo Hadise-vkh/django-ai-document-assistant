@@ -1,7 +1,6 @@
 from dotenv import load_dotenv
 from langchain_openai import ChatOpenAI
 import os
-
 from rest_framework import generics
 from rest_framework.views import APIView
 from rest_framework.response import Response
@@ -27,10 +26,10 @@ class QuestionHistoryListAPIView(generics.ListAPIView):
     serializer_class = QuestionHistorySerializer
 
 
-class DocumentListAPIView(generics.ListAPIView):
+
+class DocumentListAPIView(generics.ListCreateAPIView):
     queryset = Document.objects.all()
     serializer_class = DocumentSerializer
-
 
 class DocumentDetailAPIView(generics.RetrieveUpdateDestroyAPIView):
     queryset = Document.objects.all()
