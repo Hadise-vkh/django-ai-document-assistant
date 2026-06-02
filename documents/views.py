@@ -1,5 +1,5 @@
-from openai import OpenAI
 from dotenv import load_dotenv
+from langchain_openai import ChatOpenAI
 import os
 
 from rest_framework import generics
@@ -11,9 +11,10 @@ from .serializers import DocumentSerializer
 
 load_dotenv()
 
-client = OpenAI(
-    api_key=os.getenv("OPENROUTER_API_KEY"),
-    base_url="https://openrouter.ai/api/v1",
+llm = ChatOpenAI(
+    model="openrouter/free",
+    openai_api_key=os.getenv("OPENROUTER_API_KEY"),
+    openai_api_base="https://openrouter.ai/api/v1",
 )
 
 
@@ -33,27 +34,19 @@ class AskQuestionAPIView(APIView):
         for doc in documents:
             context += doc.content + "\n"
 
-        response = client.chat.completions.create(
-            model="openrouter/free",
-            messages=[
-                {
-                    "role": "system",
-                    "content": "Answer questions only using the provided documents."
-                },
-                {
-                    "role": "user",
-                    "content": f"""
+        prompt = f"""
+Answer questions only using the provided documents.
+
 Documents:
 {context}
 
 Question:
 {question}
 """
-                }
-            ]
-        )
 
-        answer = response.choices[0].message.content
+        response = llm.invoke(prompt)
+
+        answer = response.content
 
         QuestionHistory.objects.create(
             question=question,
