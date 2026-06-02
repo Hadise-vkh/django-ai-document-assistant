@@ -1,13 +1,14 @@
 from dotenv import load_dotenv
 from langchain_openai import ChatOpenAI
 import os
-
 from rest_framework import generics
 from rest_framework.views import APIView
 from rest_framework.response import Response
-
 from .models import Document, QuestionHistory
-from .serializers import DocumentSerializer
+from .serializers import (
+    DocumentSerializer,
+    QuestionHistorySerializer
+)
 
 load_dotenv()
 
@@ -17,8 +18,15 @@ llm = ChatOpenAI(
     openai_api_base="https://openrouter.ai/api/v1",
 )
 
-
+class QuestionHistoryListAPIView(generics.ListAPIView):
+    queryset = QuestionHistory.objects.all().order_by("-created_at")
+    serializer_class = QuestionHistorySerializer
+    
 class DocumentListAPIView(generics.ListAPIView):
+    queryset = Document.objects.all()
+    serializer_class = DocumentSerializer
+
+class DocumentDetailAPIView(generics.RetrieveUpdateDestroyAPIView):
     queryset = Document.objects.all()
     serializer_class = DocumentSerializer
 
