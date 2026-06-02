@@ -22,6 +22,11 @@ class Document(models.Model):
             self.content = text
 
             super().save(update_fields=["content"])
+            from .vector_store import add_document_to_vector_store
+            add_document_to_vector_store(
+                self.id,
+                self.content
+            )
 
     def __str__(self):
         return self.title
