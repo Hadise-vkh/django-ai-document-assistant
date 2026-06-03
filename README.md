@@ -171,37 +171,7 @@ PUT /api/documents/<id>/
 DELETE /api/documents/<id>/
 ```
 
----
-
-## Ask Question
-
-```http
-POST /api/documents/ask/
-```
-
-Request:
-
-```json
-{
-  "question": "..."
-}
-```
-
-Response:
-
-```json
-{
-  "answer": "..."
-}
-```
-
----
-
-## Question History
-
-```http
-GET /api/documents/history/
-```
+See API.md for detailed documentation.
 
 ---
 
