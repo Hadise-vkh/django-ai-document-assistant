@@ -1,8 +1,6 @@
 # API Documentation
 
-Base URL:
-
-http://localhost:8000/api/
+Base URL: http://localhost:8000/api/
 
 ---
 
@@ -71,6 +69,24 @@ Content-Type: multipart/form-data
 | ----- | --------- |
 | title | string    |
 | file  | docx file |
+
+---
+
+## Partial Update Document
+
+### Request
+
+PATCH /api/documents/{id}/
+
+### Example
+
+```json
+{
+  "title": "Updated Document Title"
+}
+```
+
+Allows updating specific fields without re-uploading the document file.
 
 ---
 

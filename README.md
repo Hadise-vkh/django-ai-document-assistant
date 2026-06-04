@@ -83,8 +83,8 @@ project-root/
 ## Clone Repository
 
 ```bash
-git clone /https://github.com/Hadise-vkh/django-ai-document-assistant.git
-cd django-ai-project
+git clone https://github.com/Hadise-vkh/django-ai-document-assistant.git
+cd django-ai-document-assistant
 ```
 
 ---
@@ -105,6 +105,8 @@ Build and start the application:
 
 ```bash
 docker-compose up --build
+docker-compose exec web python manage.py migrate
+docker-compose exec web python manage.py createsuperuser
 ```
 
 Application URL:
@@ -163,6 +165,12 @@ GET /api/documents/<id>/
 
 ```http
 PUT /api/documents/<id>/
+```
+
+### Partial Update Document (Title, File, etc.)
+
+```http
+PATCH /api/documents/<id>/
 ```
 
 ### Delete Document

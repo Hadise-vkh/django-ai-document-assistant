@@ -8,3 +8,4 @@ media/
 .vscode/
 .env
 *.docx
+chroma_db/
